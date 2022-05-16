@@ -33,12 +33,13 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 # Use Sass to process CSS
-# gem "sassc-rails"
+gem "sassc-rails"
 
 # DOR-related gems
 gem 'dor-services-client', '~> 12.0'
 
 # Other gems
+gem 'bootstrap', '~> 5.1'
 gem 'config'
 
 group :development, :test do
