@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_16_171249) do
     t.jsonb "identifier"
     t.jsonb "subject"
     t.jsonb "access"
-    t.jsonb "marcEncodingData"
+    t.jsonb "marcEncodedData"
     t.jsonb "adminMetadata"
     t.string "valueAt"
     t.string "purl"

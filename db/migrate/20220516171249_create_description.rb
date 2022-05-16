@@ -12,7 +12,7 @@ class CreateDescription < ActiveRecord::Migration[7.0]
       t.jsonb :identifier
       t.jsonb :subject
       t.jsonb :access
-      t.jsonb :marcEncodingData
+      t.jsonb :marcEncodedData
       t.jsonb :adminMetadata
       t.string :valueAt
       t.string :purl
