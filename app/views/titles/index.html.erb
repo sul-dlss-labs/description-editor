@@ -1,0 +1,4 @@
+<turbo-frame id="titleFrame">
+  <%= render(Title::ShowComponent.with_collection(@titles)) %>
+  <%= render(CocinaJsonComponent.new(description_field: :title, props: @titles)) %>
+</turbo-frame>

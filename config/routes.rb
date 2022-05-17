@@ -2,7 +2,11 @@
 
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :descriptions, only: [:show] do
+    resources :titles, only: [:index]
+    get '/:field', to: 'fields#show'
+  end
 
-  get "descriptions/index"  
-  root to: "descriptions#index"
+  post 'load', to: 'home#load'
+  root to: 'home#index'
 end

@@ -1,0 +1,14 @@
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="<%= header_id %>">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#<%= collapse_id %>" aria-expanded="<%= @show %>" aria-controls="<%= collapse_id %>">
+        <%= title %>
+      </button>
+    </h2>
+    <div id="<%= collapse_id %>" class="accordion-collapse collapse<%= show_class %>" aria-labelledby="<%= header_id %>" data-bs-parent="#descriptionAccordion">
+      <div class="accordion-body">
+        <turbo-frame id="<%= frame_id %>" src="<%= field_path %>" loading="lazy">
+          Loading ...
+        </turbo-frame>
+      </div>
+    </div>
+  </div>

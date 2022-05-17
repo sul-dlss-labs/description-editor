@@ -1,0 +1,15 @@
+<div class="accordion" id="descriptionAccordion">
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :title, show: true)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :contributor)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :event)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :form)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :geographic)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :language)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :note)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :identifier)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :subject)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :access)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :marcEncodedData)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :adminMetadata)) %>
+  <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :valueAt)) %>
+</div>
