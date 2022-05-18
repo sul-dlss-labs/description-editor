@@ -1,5 +1,10 @@
 <turbo-frame id="<%= frame_id %>">
-  <div class="card">
+  <div class="card" 
+    draggable="true" 
+    data-controller="drag-field" 
+    data-action="dragstart->drag-field#dragstart dragover->drag-field#dragover dragenter->drag-field#dragenter drop->drag-field#drop"
+    data-drag-field-field-value="title"
+    data-drag-field-index-value="<%= @index %>">
     <div class="card-body">
       <%= render(Title::ValueComponent.new(title: @title)) %>
       <div class="hstack gap-2">
@@ -7,5 +12,9 @@
         <%= button_to "Delete", description_title_path(@description_id, @index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>
       </div>
     </div>
+
+    <%= form_with url: move_description_title_path(@description_id, @index), method: :post, data: { 'drag-field-target' => "moveForm", 'turbo-frame' => "titleFrame" } do |form| %>
+      <%= form.hidden_field :from_index %>
+    <% end %>
   </div>
 </turbo-frame>

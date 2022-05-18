@@ -2,7 +2,7 @@
 
 # Controller for the title field
 class TitlesController < ApplicationController
-  before_action :load_description, only: %i[index edit update new create destroy]
+  before_action :load_description, only: %i[index edit update new create destroy move]
   before_action :load_form, only: %i[edit update]
 
   TitleStruct = Struct.new('TitleStruct', :description_id, :index, :title, :description)
@@ -39,6 +39,20 @@ class TitlesController < ApplicationController
 
   def destroy
     @description.title.delete_at(params[:id].to_i)
+    @description.save!
+
+    @titles = @description.title
+    render :index
+  end
+
+  def move
+    from_index = params[:from_index].to_i
+    to_index = params[:id].to_i
+
+    Rails.logger.info("Move #{from_index} to #{to_index}")
+
+    move_title = @description.title.delete_at(from_index)
+    @description.title.insert(to_index, move_title)
     @description.save!
 
     @titles = @description.title

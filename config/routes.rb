@@ -3,7 +3,11 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :descriptions, only: [:show] do
-    resources :titles, only: %i[index edit update new create destroy]
+    resources :titles, only: %i[index edit update new create] do
+      member do
+        post 'move'
+      end
+    end
     get '/:field', to: 'fields#show'
   end
 
