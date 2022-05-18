@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :descriptions, only: [:show] do
+  resources :descriptions, only: %i[show update] do
     resources :titles, only: %i[index edit update new create] do
       member do
         post 'move'

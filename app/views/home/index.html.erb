@@ -1,6 +1,4 @@
-# TODO: Bootstrap this.
-# TODO: Use load_path for url
-<%= form_with url: "/load", method: :post do |form| %>
+<%= form_with url: load_path, method: :post do |form| %>
   <%= form.label :id, "Druid:" %>
   <%= form.text_field :id %>
   <%= form.submit "Edit" %>
