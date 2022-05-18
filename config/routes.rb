@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :descriptions, only: [:show] do
-    resources :titles, only: [:index]
+    resources :titles, only: %i[index edit update new create destroy]
     get '/:field', to: 'fields#show'
   end
 

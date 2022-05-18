@@ -41,6 +41,8 @@ gem 'dor-services-client', '~> 12.0'
 # Other gems
 gem 'bootstrap', '~> 5.1'
 gem 'config'
+gem 'reform'
+gem 'reform-rails'
 gem 'view_component'
 
 group :development, :test do

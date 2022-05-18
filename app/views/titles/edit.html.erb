@@ -1,0 +1,13 @@
+<turbo-frame id="titleFrame_<%= params[:id] %>">
+  <div class="card">
+    <div class="card-header">Edit</div>
+    <div class="card-body">
+      <%= form_with model: @form, url: description_title_path(@form.description_id, @form.index), method: :patch do |form| %>
+        <%= form.label :id, "Value:" %>
+        <%= form.text_field :value %>
+        <%= form.submit "Save" %>
+      <% end %>
+      <%= button_to "Cancel", description_title_path(@form.description_id, @form.index), method: :get, class: "btn btn-outline-primary btn-sm" %>
+    </div>
+  </div>
+</turbo-frame>

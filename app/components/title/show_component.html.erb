@@ -1,2 +1,11 @@
-<%= @index %>
-<%= render(Title::ValueComponent.new(title: @title)) %>
+<turbo-frame id="<%= frame_id %>">
+  <div class="card">
+    <div class="card-body">
+      <%= render(Title::ValueComponent.new(title: @title)) %>
+      <div class="hstack gap-2">
+        <%= button_to "Edit", edit_description_title_path(@description_id, @index), method: :get, class: "btn btn-outline-primary btn-sm" %>
+        <%= button_to "Delete", description_title_path(@description_id, @index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>
+      </div>
+    </div>
+  </div>
+</turbo-frame>
