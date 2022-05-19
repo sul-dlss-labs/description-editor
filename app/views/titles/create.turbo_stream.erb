@@ -1,0 +1,15 @@
+<turbo-stream action="append" target="titlesFrame">
+  <template>
+    <%= render(Title::ShowComponent.new(title_model: @title_model, description_id: params[:description_id])) %>
+  </template>
+</turbo-frame>
+<turbo-stream action="replace" target="addTitleFrame">
+  <template>
+    <%= render(Title::AddComponent.new(description_id: params[:description_id])) %>
+  </template>
+</turbo-stream>
+<turbo-stream action="replace" target="titleCocinaJson">
+  <template>
+    <%= render(CocinaJsonComponent.new(description_field: :title, props: @titles)) %>
+  </template>
+</turbo-stream>

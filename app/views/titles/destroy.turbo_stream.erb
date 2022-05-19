@@ -1,0 +1,6 @@
+<%= turbo_stream.remove "titleFrame_#{params[:id]}" %>
+<turbo-stream action="replace" target="titleCocinaJson">
+  <template>
+    <%= render(CocinaJsonComponent.new(description_field: :title, props: @titles)) %>
+  </template>
+</turbo-stream>

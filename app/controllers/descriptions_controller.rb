@@ -2,10 +2,12 @@
 
 # Controller for descriptions (active record)
 class DescriptionsController < ApplicationController
-  def show; end
+  def show
+    @druid = Description.select(:external_identifier).find(params[:id]).external_identifier
+  end
 
   def update
-    description = Description.find(params[:id].to_i)
+    description = Description.find(params[:id])
     DorService.update(description)
     description.destroy!
 

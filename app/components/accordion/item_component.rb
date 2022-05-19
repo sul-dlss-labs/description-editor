@@ -30,7 +30,6 @@ module Accordion
 
     def field_path
       "#{description_path(@description_id)}/#{@description_field.to_s.pluralize}"
-      # description_titles_path(@description_id)
     end
   end
 end

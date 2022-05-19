@@ -1,4 +1,4 @@
-<%= form_with model: @title_form, url: @url, method: @method, data: { 'turbo-frame' => "titleFrame" } do |title_form| %>
+<%= form_with model: @title_form, url: @url, method: @method do |title_form| %>
   <%= title_form.fields_for @title_form.prop_hash do |form| %>
     <%= form.label :value, "Value:" %>
     <%= form.text_field :value %>

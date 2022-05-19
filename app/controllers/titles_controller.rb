@@ -3,21 +3,16 @@
 # Controller for the title field
 class TitlesController < ApplicationController
   before_action :load_description, only: %i[index edit update new create destroy move]
+  before_action :load_form, only: %i[edit update]
+  before_action :load_blank_form, only: %i[new create]
 
   def index
     render_index
   end
 
-  def edit
-    @title_model = Model::Title.from_cocina_props(index: title_index,
-                                                  cocina_title_props: @description.title[title_index])
-    @title_form = TitleForm.new(@title_model)
-  end
+  def edit; end
 
   def update
-    title_model = Model::Title.from_cocina_props(index: title_index,
-                                                 cocina_title_props: @description.title[title_index])
-    @title_form = TitleForm.new(title_model)
     @title_form.validate(params.require(:title))
     @title_form.sync
 
@@ -26,30 +21,42 @@ class TitlesController < ApplicationController
     @description.title[title_index] = cocina_title.to_h
     @description.save!
 
-    render_index
+    @title_model = Model::Title.from_cocina_props(index: title_index,
+                                                  cocina_title_props: @description.title[title_index])
+    @titles = @description.title
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
-  def new
-    @title_form = TitleForm.new(Model::Title.new)
-  end
+  def new; end
 
   def create
-    title_form = TitleForm.new(Model::Title.new)
-    title_form.validate(params.require(:title))
-    title_form.sync
+    @title_form.validate(params.require(:title))
+    @title_form.sync
 
-    cocina_title = Cocina::Models::Title.new(title_form.model.to_cocina_props.compact)
+    cocina_title = Cocina::Models::Title.new(@title_form.model.to_cocina_props.compact)
     @description.title << cocina_title.to_h
     @description.save!
 
-    render_index
+    @titles = @description.title
+    new_index = @description.title.size - 1
+    @title_model = Model::Title.from_cocina_props(index: new_index, cocina_title_props: @description.title[new_index])
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   def destroy
     @description.title.delete_at(params[:id].to_i)
     @description.save!
+    @titles = @description.title
 
-    render_index
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   def move
@@ -79,5 +86,15 @@ class TitlesController < ApplicationController
 
   def title_index
     params[:id].to_i
+  end
+
+  def load_form
+    title_model = Model::Title.from_cocina_props(index: title_index,
+                                                 cocina_title_props: @description.title[title_index])
+    @title_form = TitleForm.new(title_model)
+  end
+
+  def load_blank_form
+    @title_form = TitleForm.new(Model::Title.new)
   end
 end

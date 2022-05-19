@@ -16,4 +16,8 @@ class CocinaJsonComponent < ViewComponent::Base
   def header
     "#{@description_field.to_s.titlecase} Cocina JSON"
   end
+
+  def frame_id
+    "#{@description_field}CocinaJson"
+  end
 end
