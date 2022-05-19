@@ -2,12 +2,14 @@
   <div class="card mt-2 mb-4">
     <div class="card-header">Add</div>
     <div class="card-body">
-      <%= form_with model: @form, url: description_titles_path(@form.description_id), method: :post, data: { 'turbo-frame' => "titleFrame" } do |form| %>
+      <%= form_with model: @title_model, url: description_titles_path(params[:description_id]), method: :post, data: { 'turbo-frame' => "titleFrame" } do |form| %>
         <%= form.label :id, "Value:" %>
         <%= form.text_field :value %>
+        <%= form.check_box :primary_status %>
+        <%= form.label :primary_status, "Primary" %>
         <%= form.submit "Save" %>
       <% end %>
-      <%= button_to "Cancel", description_titles_path(@form.description_id), class: "btn btn-outline-primary btn-sm", method: :get %>
+      <%= button_to "Cancel", description_titles_path(params[:description_id]), class: "btn btn-outline-primary btn-sm", method: :get %>
     </div>
   </div>
 

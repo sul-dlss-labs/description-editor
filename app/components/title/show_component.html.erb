@@ -5,8 +5,18 @@
     data-action="dragstart->drag-field#dragstart dragover->drag-field#dragover dragenter->drag-field#dragenter drop->drag-field#drop"
     data-drag-field-field-value="title"
     data-drag-field-index-value="<%= @index %>">
+    <% if @title_model.primary_status %>
+      <div class="card-header">
+        Primary title
+      </div>
+    <% end %>
+
     <div class="card-body">
-      <%= render(Title::ValueComponent.new(title: @title)) %>
+      <dl class="row mb-0">
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10"><%= @title_model.value %></dd>
+      </dl>
+
       <div class="hstack gap-2">
         <%= button_to "Edit", edit_description_title_path(@description_id, @index), method: :get, class: "btn btn-outline-primary btn-sm" %>
         <%= button_to "Delete", description_title_path(@description_id, @index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>
