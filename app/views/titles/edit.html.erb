@@ -1,15 +1,8 @@
-<turbo-frame id="titleFrame_<%= params[:id] %>">
+<turbo-frame id="titleFrame_<%= @title_form.index %>">
   <div class="card">
     <div class="card-header">Edit</div>
     <div class="card-body">
-      <%= form_with model: @title_model, url: description_title_path(params[:description_id], params[:id]), method: :patch, data: { 'turbo-frame' => "titleFrame" } do |form| %>
-        <%= form.label :id, "Value:" %>
-        <%= form.text_field :value %>
-        <%= form.check_box :primary_status %>
-        <%= form.label :primary_status, "Primary" %>
-        <%= form.submit "Save" %>
-      <% end %>
-      <%= button_to "Cancel", description_title_path(params[:description_id], params[:id]), method: :get, class: "btn btn-outline-primary btn-sm" %>
+      <%= render(Title::FormComponent.new(form: @title_form, url: description_title_path(params[:description_id], @title_form.index), method: :patch)) %>    
     </div>
   </div>
 </turbo-frame>

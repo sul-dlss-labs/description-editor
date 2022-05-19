@@ -1,0 +1,10 @@
+<%= form_with model: @title_form, url: @url, method: @method, data: { 'turbo-frame' => "titleFrame" } do |title_form| %>
+  <%= title_form.fields_for @title_form.prop_hash do |form| %>
+    <%= form.label :value, "Value:" %>
+    <%= form.text_field :value %>
+    <%= form.check_box :primary_status %>
+    <%= form.label :primary_status, "Primary" %>
+    <%= form.submit "Save" %>
+  <% end %>
+<% end %>
+<%= button_to "Cancel", @url, method: :get, class: "btn btn-outline-primary btn-sm" %>
