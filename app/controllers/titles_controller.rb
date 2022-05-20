@@ -2,12 +2,15 @@
 
 # Controller for the title field
 class TitlesController < ApplicationController
-  before_action :load_description, only: %i[index edit update new create destroy move]
-  before_action :load_form, only: %i[edit update]
+  before_action :load_description
+  before_action :load_form, only: %i[edit update show]
   before_action :load_blank_form, only: %i[new create]
 
   def index
     render_index
+  end
+
+  def show
   end
 
   def edit; end
@@ -77,8 +80,9 @@ class TitlesController < ApplicationController
   end
 
   def render_index
-    @title_models = @description.title.map.with_index do |title_props, index|
-      Model::Title.from_cocina_props(index: index, cocina_title_props: title_props)
+    # Using forms since they are easier to work with then models.
+    @title_forms = @description.title.map.with_index do |title_props, index|
+      TitleForm.new(Model::Title.from_cocina_props(index: index, cocina_title_props: title_props))
     end
     @titles = @description.title
     render :index

@@ -13,10 +13,10 @@ class TitleForm < Reform::Form
     include Disposable::Twin::Property::Struct
     property :value
     property :primary_status, type: Disposable::Twin::Coercion::Types::Params::Bool
-    # collection :foo
-    # property :bar do
-    #   include Disposable::Twin::Property::Struct
-    #   property :foobar
-    # end
+    collection :structured_values do
+      include Disposable::Twin::Property::Struct
+      property :value
+      property :type
+    end
   end
 end

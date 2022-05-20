@@ -8,25 +8,16 @@ module Model
       @prop_hash = props
     end
 
-    # include ActiveModel::API
-
     attr_accessor :index, :prop_hash
-    # attr_reader :props
     # Aliasing due to rails form naming gotchas
     alias props prop_hash
-
-    # def props=(props)
-    #   @props = props.with_indifferent_access
-    # end
-
     alias props= prop_hash=
-    # validates :primary_status, inclusion: [true, false]
 
     def to_cocina_props
       indifferent_props = props.with_indifferent_access
       {
         value: indifferent_props[:value],
-        status: indifferent_props[:primary_status] ? 'primary' : nil
+        status: indifferent_props[:primary_status] ? 'primary' : nil        
       }.with_indifferent_access
     end
 
@@ -41,7 +32,8 @@ module Model
     def self.from_cocina(index:, cocina_title:)
       props = {
         value: cocina_title.value,
-        primary_status: cocina_title.status == 'primary'
+        primary_status: cocina_title.status == 'primary',
+        structured_values: cocina_title.structuredValue.map {|structured_value| {value: structured_value.value, type: structured_value.type}}
       }
       new(index: index, props: props)
     end
