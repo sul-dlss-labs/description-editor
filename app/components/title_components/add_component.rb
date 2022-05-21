@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Title
+module TitleComponents
   class AddComponent < ViewComponent::Base
     def initialize(description_id:)
       @description_id = description_id

@@ -1,7 +1,7 @@
 <turbo-frame id="titleFrame">
   <turbo-frame id="titlesFrame">
-    <%= render(Title::ShowComponent.with_collection(@title_forms, description_id: params[:description_id])) %>
+    <%= render(TitleComponents::ShowComponent.with_collection(@title_models, description_id: params[:description_id])) %>
   </turbo-frame>
-  <%= render(Title::AddComponent.new(description_id: params[:description_id])) %>
-  <%= render(CocinaJsonComponent.new(description_field: :title, props: @titles)) %>
+  <%= render(TitleComponents::AddComponent.new(description_id: params[:description_id])) %>
+  <%= render(CocinaJsonComponent.new(description_field: :title, props: @description.title)) %>
 </turbo-frame>

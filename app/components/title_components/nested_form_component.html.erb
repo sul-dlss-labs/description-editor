@@ -1,0 +1,15 @@
+<%= @form.label :value, "Value:" %>
+<%= @form.text_field :value %>
+Structured titles:
+<ul>
+  <%= @form.fields_for :structured_values do |structured_value_form| %>
+    <li>
+      <%= structured_value_form.label :value, "Value:" %>
+      <%= structured_value_form.text_field :value %>
+      <%= structured_value_form.label :type, "Type:" %>
+      <%= structured_value_form.text_field :type %>
+      <%= structured_value_form.button("Delete structured title", value: true, name: structured_value_form.field_name(:_destroy, index: nil)) %>
+    </li>
+  <% end %>
+</ul>
+<%= @form.button(:add_structured_title, value: true, name: @form.field_name(:add_structured_title, index: nil)) { 'Add structured title' } %>

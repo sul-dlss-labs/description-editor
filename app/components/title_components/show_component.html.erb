@@ -4,7 +4,7 @@
     data-controller="drag-field" 
     data-action="dragstart->drag-field#dragstart dragover->drag-field#dragover dragenter->drag-field#dragenter drop->drag-field#drop"
     data-drag-field-field-value="title"
-    data-drag-field-index-value="<%= index %>">
+    data-drag-field-index-value="<%= @index %>">
     <% if title.primary_status %>
       <div class="card-header">
         Primary title
@@ -27,14 +27,14 @@
           <% end %>
         </dl>
       <% end %>
-
+      <%= TODO: Display parallel title -- title.parallel_titles.size %>
       <div class="hstack gap-2">
-        <%= button_to "Edit", edit_description_title_path(@description_id, index), method: :get, class: "btn btn-outline-primary btn-sm" %>
-        <%= button_to "Delete", description_title_path(@description_id, index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>
+        <%= button_to "Edit", edit_description_title_path(@description_id, @index), method: :get, class: "btn btn-outline-primary btn-sm" %>
+        <%= button_to "Delete", description_title_path(@description_id, @index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>
       </div>
     </div>
 
-    <%= form_with url: move_description_title_path(@description_id, index), method: :post, data: { 'drag-field-target' => "moveForm", 'turbo-frame' => "titleFrame" } do |form| %>
+    <%= form_with url: move_description_title_path(@description_id, @index), method: :post, data: { 'drag-field-target' => "moveForm", 'turbo-frame' => "titleFrame" } do |form| %>
       <%= form.hidden_field :from_index %>
     <% end %>
   </div>

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Title
+module TitleComponents
   class FormComponent < ViewComponent::Base
-    def initialize(form:, url:, method:)
-      @title_form = form
+    def initialize(model:, url:, method:)
+      @model = model
       @url = url
       @method = method
     end

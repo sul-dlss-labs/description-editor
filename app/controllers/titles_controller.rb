@@ -3,49 +3,43 @@
 # Controller for the title field
 class TitlesController < ApplicationController
   before_action :load_description
-  before_action :load_form, only: %i[edit update show]
-  before_action :load_blank_form, only: %i[new create]
 
   def index
     render_index
   end
 
   def show
+    @title_model = Title.from_cocina_props(@description.title[title_index])
   end
 
-  def edit; end
+  def edit
+    @title_model = Title.from_cocina_props(@description.title[title_index])
+  end
 
   def update
-    @title_form.validate(params.require(:title))
-    @title_form.sync
+    return render :edit if handle_form_changes
 
-    new_title_props = @description.title[title_index].merge(@title_form.model.to_cocina_props).compact
-    cocina_title = Cocina::Models::Title.new(new_title_props)
-    @description.title[title_index] = cocina_title.to_h
+    @title_model = Title.new(title_params)
+    @description.title[title_index] = @title_model.to_cocina_props
     @description.save!
-
-    @title_model = Model::Title.from_cocina_props(index: title_index,
-                                                  cocina_title_props: @description.title[title_index])
-    @titles = @description.title
 
     respond_to do |format|
       format.turbo_stream
     end
   end
 
-  def new; end
+  def new
+    @title_model = Title.new
+  end
 
   def create
-    @title_form.validate(params.require(:title))
-    @title_form.sync
+    return render :new if handle_form_changes
 
-    cocina_title = Cocina::Models::Title.new(@title_form.model.to_cocina_props.compact)
-    @description.title << cocina_title.to_h
+    @title_model = Title.new(title_params)
+    @description.title << @title_model.to_cocina_props
     @description.save!
 
-    @titles = @description.title
-    new_index = @description.title.size - 1
-    @title_model = Model::Title.from_cocina_props(index: new_index, cocina_title_props: @description.title[new_index])
+    @index = @description.title.size - 1
 
     respond_to do |format|
       format.turbo_stream
@@ -55,7 +49,6 @@ class TitlesController < ApplicationController
   def destroy
     @description.title.delete_at(params[:id].to_i)
     @description.save!
-    @titles = @description.title
 
     respond_to do |format|
       format.turbo_stream
@@ -80,11 +73,14 @@ class TitlesController < ApplicationController
   end
 
   def render_index
+    @title_models = @description.title.map do |title_props|
+      Title.from_cocina_props(title_props)
+    end
     # Using forms since they are easier to work with then models.
     @title_forms = @description.title.map.with_index do |title_props, index|
       TitleForm.new(Model::Title.from_cocina_props(index: index, cocina_title_props: title_props))
     end
-    @titles = @description.title
+
     render :index
   end
 
@@ -92,13 +88,44 @@ class TitlesController < ApplicationController
     params[:id].to_i
   end
 
-  def load_form
-    title_model = Model::Title.from_cocina_props(index: title_index,
-                                                 cocina_title_props: @description.title[title_index])
-    @title_form = TitleForm.new(title_model)
+  def handle_form_changes
+    params_hash = params.to_unsafe_h
+    # Clicked a delete button
+    if DeepHasKeyValue.has?(params_hash, :_destroy, 'true')
+      @title_model = Title.new(title_params)
+      return true
+    end
+
+    # Clicked the add structured title button.
+    # This can be nested.
+    if DeepHasKeyValue.has?(params_hash, :add_structured_title, 'true')
+      @title_model = Title.new(title_params)
+      @title_model.structured_values << TitleStructuredValue.new if params[:title][:add_structured_title] == 'true'
+      Hash(params_hash[:title][:parallel_titles_attributes]).values.each_with_index do |parallel_title_params, index|
+        next unless parallel_title_params[:add_structured_title] == 'true'
+
+        @title_model.parallel_titles << Title.new unless @title_model.parallel_titles[index]
+        @title_model.parallel_titles[index].structured_values << TitleStructuredValue.new
+      end
+      return true
+    end
+
+    # Clicked the add parallel title button.
+    # This can only be at the top level.
+    if params[:title][:add_parallel_title] == 'true'
+      @title_model = Title.new(title_params)
+      @title_model.parallel_titles << Title.new
+
+      return true
+    end
+    false
   end
 
-  def load_blank_form
-    @title_form = TitleForm.new(Model::Title.new)
+  def title_params
+    params.require(:title).permit(:value,
+                                  :primary_status,
+                                  parallel_titles_attributes: [:value, :_destroy,
+                                                               { structured_values_attributes: %i[value type _destroy] }],
+                                  structured_values_attributes: %i[value type _destroy])
   end
 end

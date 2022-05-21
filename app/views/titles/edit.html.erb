@@ -1,8 +1,8 @@
-<turbo-frame id="titleFrame_<%= @title_form.index %>">
+<turbo-frame id="titleFrame_<%= params[:id] %>">
   <div class="card">
     <div class="card-header">Edit</div>
     <div class="card-body">
-      <%= render(Title::FormComponent.new(form: @title_form, url: description_title_path(params[:description_id], @title_form.index), method: :patch)) %>    
+      <%= render(TitleComponents::FormComponent.new(model: @title_model, url: description_title_path(params[:description_id], params[:id]), method: :patch)) %>    
     </div>
   </div>
 </turbo-frame>

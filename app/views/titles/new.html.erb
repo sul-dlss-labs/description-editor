@@ -2,7 +2,7 @@
   <div class="card mt-2 mb-4">
     <div class="card-header">Add</div>
     <div class="card-body">
-      <%= render(Title::FormComponent.new(form: @title_form, url: description_titles_path(params[:description_id]), method: :post)) %>
+      <%= render(TitleComponents::FormComponent.new(model: @title_model, url: description_titles_path(params[:description_id]), method: :post)) %>
     </div>
   </div>
 </turbo-frame>

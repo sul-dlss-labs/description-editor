@@ -1,10 +1,10 @@
-<turbo-stream action="replace" target="titleFrame_<%= @title_model.index %>">
+<turbo-stream action="replace" target="titleFrame_<%= params[:id] %>">
   <template>
-    <%= render(Title::ShowComponent.new(title_model: @title_model, description_id: params[:description_id])) %>
+    <%= render(TitleComponents::ShowComponent.new(title_model: @title_model, description_id: params[:description_id], index: params[:id])) %>
   </template>
 </turbo-stream>
 <turbo-stream action="replace" target="titleCocinaJson">
   <template>
-    <%= render(CocinaJsonComponent.new(description_field: :title, props: @titles)) %>
+    <%= render(CocinaJsonComponent.new(description_field: :title, props: @description.title)) %>
   </template>
 </turbo-stream>

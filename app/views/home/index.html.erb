@@ -1,5 +1,11 @@
+<h1 class="mb-5">Description Editor</h1>
 <%= form_with url: load_path, method: :post do |form| %>
-  <%= form.label :id, "Druid:" %>
-  <%= form.text_field :id %>
-  <%= form.submit "Edit" %>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= form.text_field :id, class: 'form-control form-control-lg', placeholder: 'Enter a druid, e.g., druid:bb016xs8671' %>
+    </div>
+    <div class="col-sm-1">
+      <%= form.submit "Edit", class: 'btn btn-primary btn-lg' %>
+    </div>
+  </div>
 <% end %>

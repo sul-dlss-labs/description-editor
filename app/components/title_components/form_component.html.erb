@@ -1,0 +1,17 @@
+<%= form_with model: @model, url: @url, method: @method do |form| %>
+  <%= render(TitleComponents::NestedFormComponent.new(form: form)) %>
+  Parallel titles (<%= @model.parallel_titles.size %>):
+  <ul>
+    <%= form.fields_for :parallel_titles do |parallel_value_form| %>
+      <li>
+        <%= render(TitleComponents::NestedFormComponent.new(form: parallel_value_form)) %>
+        <%= parallel_value_form.button("Delete parallel title", value: true, name: parallel_value_form.field_name(:_destroy, index: nil)) %>
+      </li>
+    <% end %>
+  </ul>
+  <%= form.button(:add_parallel_title, value: true) { 'Add parallel title' } %>
+  <%= form.check_box :primary_status %>  
+  <%= form.label :primary_status, "Primary" %>
+  <%= form.submit "Save" %>
+<% end %>
+<%= button_to "Cancel", @url, method: :get, class: "btn btn-outline-primary btn-sm" %>

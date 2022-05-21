@@ -1,1 +1,1 @@
-<%= render(Title::ShowComponent.new(title_form: @title_form, description_id: params[:description_id])) %>
+<%= render(TitleComponents::ShowComponent.new(title_model: @title_model, description_id: params[:description_id], index: params[:id])) %>
