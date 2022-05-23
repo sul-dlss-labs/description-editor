@@ -7,6 +7,15 @@ class Title < ApplicationRecord
   has_many :parallel_titles, class_name: 'Title'
   accepts_nested_attributes_for :parallel_titles, reject_if: :all_blank, allow_destroy: true
 
+  validate :only_one_type_of_value
+
+  def only_one_type_of_value
+    present_values = [value, structured_values, parallel_titles].select(&:present?)
+    if present_values.size > 1
+      errors.add(:base, "can't have multiple types of values (value, structured values, or parallel titles)")
+    end
+  end
+
   def to_cocina_props
     props = {
       value: value.presence,

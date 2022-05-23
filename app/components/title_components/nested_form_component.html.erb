@@ -1,15 +1,22 @@
-<%= @form.label :value, "Value:" %>
-<%= @form.text_field :value %>
-Structured titles:
-<ul>
+<%= @form.text_field :value, label: "Value:", class: 'mb-3' %>
+<div class="row">
+  <h6>Structured titles:</h6>
   <%= @form.fields_for :structured_values do |structured_value_form| %>
-    <li>
-      <%= structured_value_form.label :value, "Value:" %>
-      <%= structured_value_form.text_field :value %>
-      <%= structured_value_form.label :type, "Type:" %>
-      <%= structured_value_form.text_field :type %>
-      <%= structured_value_form.button("Delete structured title", value: true, name: structured_value_form.field_name(:_destroy, index: nil)) %>
-    </li>
+    <div class="row mb-2">
+      <div class="col-md-6">
+        <%= structured_value_form.text_field :value, label: "Value:" %>
+      </div>      
+      <div class="col-md-4">
+        <%= structured_value_form.select :type, type_choices, label: "Type:" %>
+      </div>
+      <div class="col-md-2 mt-2">
+        <%= structured_value_form.delete_button("Delete") %>
+      </div>
+    </div>
   <% end %>
-</ul>
-<%= @form.button(:add_structured_title, value: true, name: @form.field_name(:add_structured_title, index: nil)) { 'Add structured title' } %>
+</div>
+<div class="row">
+  <div class="col-auto">
+    <%= @form.add_button(:add_structured_title) { 'Add structured title' } %>
+  </div>
+</div>

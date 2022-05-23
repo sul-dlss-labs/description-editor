@@ -33,5 +33,9 @@ module DescriptionEditor
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # For known ViewComponent form issue.
+    # See https://viewcomponent.org/known_issues.html
+    config.view_component.use_global_output_buffer = true
   end
 end

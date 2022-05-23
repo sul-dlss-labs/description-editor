@@ -20,6 +20,9 @@ class TitlesController < ApplicationController
     return render :edit if handle_form_changes
 
     @title_model = Title.new(title_params)
+
+    return render :edit, status: :unprocessable_entity unless @title_model.valid?
+
     @description.title[title_index] = @title_model.to_cocina_props
     @description.save!
 
@@ -36,6 +39,9 @@ class TitlesController < ApplicationController
     return render :new if handle_form_changes
 
     @title_model = Title.new(title_params)
+
+    return render :new, status: :unprocessable_entity unless @title_model.valid?
+
     @description.title << @title_model.to_cocina_props
     @description.save!
 
@@ -75,10 +81,6 @@ class TitlesController < ApplicationController
   def render_index
     @title_models = @description.title.map do |title_props|
       Title.from_cocina_props(title_props)
-    end
-    # Using forms since they are easier to work with then models.
-    @title_forms = @description.title.map.with_index do |title_props, index|
-      TitleForm.new(Model::Title.from_cocina_props(index: index, cocina_title_props: title_props))
     end
 
     render :index

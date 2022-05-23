@@ -1,17 +1,32 @@
-<%= form_with model: @model, url: @url, method: @method do |form| %>
+<%= form_with model: @model, url: @url, method: @method, builder: DescriptionFormBuilder do |form| %>
+  <%= form.errors %>
   <%= render(TitleComponents::NestedFormComponent.new(form: form)) %>
-  Parallel titles (<%= @model.parallel_titles.size %>):
-  <ul>
+  <div class="row mt-3">
+    <h6>Parallel titles:</h6>
     <%= form.fields_for :parallel_titles do |parallel_value_form| %>
-      <li>
-        <%= render(TitleComponents::NestedFormComponent.new(form: parallel_value_form)) %>
-        <%= parallel_value_form.button("Delete parallel title", value: true, name: parallel_value_form.field_name(:_destroy, index: nil)) %>
-      </li>
+      <div class="row mb-3">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+          <%= render(TitleComponents::NestedFormComponent.new(form: parallel_value_form)) %>
+        </div>
+        <div class="col-sm-1 mt-2">  
+          <%= parallel_value_form.delete_button("Delete") %>
+        </div>
+      </div>
     <% end %>
-  </ul>
-  <%= form.button(:add_parallel_title, value: true) { 'Add parallel title' } %>
-  <%= form.check_box :primary_status %>  
-  <%= form.label :primary_status, "Primary" %>
-  <%= form.submit "Save" %>
+  </div>
+  <div class="row">
+    <div class="col-auto">
+      <%= form.add_button(:add_parallel_title) { 'Add parallel title' } %>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
+      <%= form.check_box :primary_status, label: "Primary" %>  
+    </div>
+  </div>
+  <div class="hstack gap-2 mt-4">
+    <%= form.submit "Save" %>
+    <%= link_to "Cancel", @url, class: "btn btn-outline-primary btn-sm" %>
+  </div>
 <% end %>
-<%= button_to "Cancel", @url, method: :get, class: "btn btn-outline-primary btn-sm" %>

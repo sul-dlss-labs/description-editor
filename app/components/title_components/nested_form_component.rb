@@ -5,5 +5,9 @@ module TitleComponents
     def initialize(form:)
       @form = form
     end
+
+    def type_choices
+      CocinaDescriptionTypes.types_for('title.structuredValue')
+    end
   end
 end

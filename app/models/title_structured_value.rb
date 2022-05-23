@@ -6,6 +6,8 @@ class TitleStructuredValue < ApplicationRecord
 
   belongs_to :title
 
+  validates :type, :value, presence: true
+
   def to_cocina_props
     {
       value: value.presence,
