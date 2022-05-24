@@ -2,17 +2,22 @@
 <div class="row">
   <h6>Structured titles:</h6>
   <%= @form.fields_for :structured_values do |structured_value_form| %>
-    <div class="row mb-2">
-      <div class="col-md-6">
-        <%= structured_value_form.text_field :value, label: "Value:" %>
-      </div>      
-      <div class="col-md-4">
-        <%= structured_value_form.select :type, type_choices, label: "Type:" %>
+    <%= render(Drag::TargetComponent.new(title_index: params[:id], key: structured_value_form.field_name(:drag, index: nil))) do %>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <%= structured_value_form.text_field :value, label: "Value:" %>
+        </div>      
+        <div class="col-md-4">
+          <%= structured_value_form.select :type, type_choices, label: "Type:" %>
+        </div>
+        <div class="col-md-2 mt-2 hstack gap-2">
+          <%= structured_value_form.delete_button("Delete") %>
+          <% if @form.object.structured_values.size > 1 %>
+            <%= render(Drag::SourceComponent.new(title_index: params[:id], key: structured_value_form.field_name(:drag, index: nil))) %>
+          <% end %>
+        </div>
       </div>
-      <div class="col-md-2 mt-2">
-        <%= structured_value_form.delete_button("Delete") %>
-      </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 <div class="row">

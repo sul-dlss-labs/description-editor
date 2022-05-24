@@ -1,6 +1,14 @@
 <turbo-frame id="titleFrame_<%= params[:id] %>">
   <div class="card">
-    <div class="card-header">Edit</div>
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-11">
+          Edit
+        </div>
+        <div class="col-md-1">
+          <%= render(Drag::SourceComponent.new(title_index: params[:id])) %>
+        </div>
+      </div>    </div>
     <div class="card-body">
       <%= render(TitleComponents::FormComponent.new(model: @title_model, url: description_title_path(params[:description_id], params[:id]), method: :patch)) %>    
     </div>

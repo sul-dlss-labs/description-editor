@@ -18,6 +18,7 @@ class TitlesController < ApplicationController
 
   def update
     return render :edit if handle_form_changes
+    return render :edit if handle_move
 
     @title_model = Title.new(title_params)
 
@@ -37,6 +38,7 @@ class TitlesController < ApplicationController
 
   def create
     return render :new if handle_form_changes
+    return render :new if handle_move
 
     @title_model = Title.new(title_params)
 
@@ -121,6 +123,47 @@ class TitlesController < ApplicationController
       return true
     end
     false
+  end
+
+  def handle_move
+    return false unless params[:from_key].present? && params[:to_key].present?
+
+    split_from_key = split_move_key(params[:from_key])
+    split_to_key = split_move_key(params[:to_key])
+    title_params_hash = title_params.to_unsafe_h
+
+    # Moving top-level structured values - ["title", "structured_values_attributes", "2", "drag"]
+    if split_from_key[1] == 'structured_values_attributes' && split_from_key[3] == 'drag'
+      move_attributes(split_from_key[2].to_i, split_to_key[2].to_i, 'structured_values_attributes', title_params_hash)
+    end
+    # Moving top-level parallel titles - ["title", "parallel_titles_attributes", "2", "drag"]
+    if split_from_key[1] == 'parallel_titles_attributes' && split_from_key[3] == 'drag'
+      move_attributes(split_from_key[2].to_i, split_to_key[2].to_i, 'parallel_titles_attributes', title_params_hash)
+    end
+    # Moving nested structured values - ["title", "parallel_titles_attributes", "2", "structured_values_attributes", "1", "drag"]
+    if split_from_key[1] == 'parallel_titles_attributes' && split_from_key[5] == 'drag'
+      move_attributes(split_from_key[4].to_i, split_to_key[4].to_i, 'structured_values_attributes',
+                      title_params_hash[:parallel_titles_attributes][split_from_key[2]])
+    end
+
+    @title_model = Title.new(title_params_hash)
+
+    true
+  end
+
+  def move_attributes(from_index, to_index, name, params_hash)
+    new_keys = params_hash[name.to_sym].keys
+    new_keys.delete_at(from_index)
+    new_keys.insert(to_index, from_index.to_s)
+    params_hash[name.to_sym] = {}.tap do |attrs|
+      new_keys.each_with_index do |index, new_index|
+        attrs[new_index.to_s] = params_hash[name.to_sym][index]
+      end
+    end
+  end
+
+  def split_move_key(key)
+    key.split(/[\[\]]+/)
   end
 
   def title_params

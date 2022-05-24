@@ -1,0 +1,14 @@
+<% if title.value %>
+  <dl class="row mb-0">
+    <dt class="col-sm-2">Title</dt>
+    <dd class="col-sm-10"><%= title.value %></dd>
+  </dl>
+<% end %>
+<% if title.structured_values.present? %>
+  <dl class="row mb-0">
+    <% title.structured_values.each do |structured_value| %>
+      <dt class="col-sm-2"><%= structured_value.type.titlecase %></dt>
+      <dd class="col-sm-10"><%= structured_value.value %></dd>
+    <% end %>
+  </dl>
+<% end %>

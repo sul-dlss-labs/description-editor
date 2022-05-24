@@ -40,6 +40,7 @@ gem 'dor-services-client', '~> 12.0'
 
 # Other gems
 gem 'bootstrap', '~> 5.1'
+gem 'bootstrap-icons-helper'
 gem 'config'
 gem 'view_component'
 
