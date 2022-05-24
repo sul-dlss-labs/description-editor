@@ -10,7 +10,8 @@ class Title < ApplicationRecord
   has_many :parallel_titles, class_name: 'Title'
   accepts_nested_attributes_for :parallel_titles, reject_if: :all_blank, allow_destroy: true
 
-  validates :value_at, format: { with: URI::DEFAULT_PARSER.regexp[:ABS_URI], message: 'must be a URL' }
+  validates :value_at, format: { with: URI::DEFAULT_PARSER.regexp[:ABS_URI], message: 'must be a URL' },
+                       allow_blank: true
 
   validate :only_one_type_of_value
 
@@ -29,7 +30,8 @@ class Title < ApplicationRecord
       displayLabel: display_label.presence,
       valueAt: value_at.presence,
       structuredValue: structured_values.map(&:to_cocina_props),
-      parallelValue: parallel_titles.map(&:to_cocina_props)
+      parallelValue: parallel_titles.map(&:to_cocina_props),
+      note: notes
     }.tap do |props|
       props[:valueLanguage] = { code: language_code, source: { code: 'iso639-2b' } } if language_code.present?
       if script_code.present?
@@ -39,6 +41,20 @@ class Title < ApplicationRecord
       props[:standard] = { value: transliteration_standard } if transliteration_standard.present?
     end.compact
     Cocina::Models::Title.new(props).to_h
+  end
+
+  def notes
+    nonsorting = structured_values.find { |structured_value| structured_value.type == 'nonsorting characters' }&.value
+    return [] unless nonsorting
+
+    last_character = nonsorting.slice(-1, 1)
+    add = ['-', "'", ' '].include?(last_character) ? 0 : 1
+    count = nonsorting.size + add
+
+    [{
+      value: count.to_s,
+      type: 'nonsorting character count'
+    }]
   end
 
   def self.from_cocina_props(props)
