@@ -22,9 +22,12 @@ class TitlesController < ApplicationController
 
     @title_model = Title.new(title_params)
 
-    return render :edit, status: :unprocessable_entity unless @title_model.valid?
+    new_titles_props = @description.title.dup
+    new_titles_props[title_index] = @title_model.to_cocina_props
 
-    @description.title[title_index] = @title_model.to_cocina_props
+    return render :edit, status: :unprocessable_entity unless valid?(new_titles_props)
+
+    @description.title = new_titles_props
     @description.save!
 
     respond_to do |format|
@@ -42,9 +45,12 @@ class TitlesController < ApplicationController
 
     @title_model = Title.new(title_params)
 
-    return render :new, status: :unprocessable_entity unless @title_model.valid?
+    new_titles_props = @description.title.dup
+    new_title_props << @title_model.to_cocina_props
 
-    @description.title << @title_model.to_cocina_props
+    return render :new, status: :unprocessable_entity unless valid?(new_titles_props)
+
+    @description.title = new_titles_props
     @description.save!
 
     @index = @description.title.size - 1
@@ -191,5 +197,16 @@ class TitlesController < ApplicationController
                                                                { structured_values_attributes: %i[value type
                                                                                                   _destroy] }],
                                   structured_values_attributes: %i[value type _destroy])
+  end
+
+  def valid?(titles_props)
+    # Need to validate across titles
+    primary_count = titles_props.count { |title_props| title_props.with_indifferent_access[:status] == 'primary' }
+    @title_model.valid?
+    if primary_count > 1
+      @title_model.errors.add(:primary_status, :not_unique,
+                              message: 'Only one title can have primary status')
+    end
+    @title_model.errors.empty?
   end
 end
