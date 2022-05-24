@@ -10,6 +10,8 @@ class Title < ApplicationRecord
   has_many :parallel_titles, class_name: 'Title'
   accepts_nested_attributes_for :parallel_titles, reject_if: :all_blank, allow_destroy: true
 
+  validates :value_at, format: { with: URI::DEFAULT_PARSER.regexp[:ABS_URI], message: 'must be a URL' }
+
   validate :only_one_type_of_value
 
   def only_one_type_of_value
@@ -24,14 +26,17 @@ class Title < ApplicationRecord
       value: value.presence,
       status: primary_status ? 'primary' : nil,
       type: type.presence,
+      displayLabel: display_label.presence,
+      valueAt: value_at.presence,
       structuredValue: structured_values.map(&:to_cocina_props),
       parallelValue: parallel_titles.map(&:to_cocina_props)
     }.tap do |props|
-      props[:valueLanguage] = { code: language_code, source: { code: 'iso639-2b' } } if language_code
-      if script_code
+      props[:valueLanguage] = { code: language_code, source: { code: 'iso639-2b' } } if language_code.present?
+      if script_code.present?
         props[:valueLanguage] ||= {}
         props[:valueLanguage][:valueScript] = { code: script_code, source: { code: 'iso15924' } }
       end
+      props[:standard] = { value: transliteration_standard } if transliteration_standard.present?
     end.compact
     Cocina::Models::Title.new(props).to_h
   end
@@ -43,6 +48,9 @@ class Title < ApplicationRecord
   def self.from_cocina(cocina_title)
     params = {
       value: cocina_title.value,
+      display_label: cocina_title.displayLabel,
+      value_at: cocina_title.valueAt,
+      transliteration_standard: cocina_title&.standard&.value,
       primary_status: cocina_title.status == 'primary',
       type: cocina_title.type,
       structured_values: cocina_title.structuredValue.map do |cocina_structured_value|

@@ -1,11 +1,14 @@
-<div class="row mb-3">
-  <div class="col-md-4">
-    <%= @form.select :type, type_choices, label: "Type:" %>
+<div data-controller="conditional-enabled" data-conditional-enabled-check-value-value="transliterated">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <%= @form.select :type, type_choices, label: "Type:", html_options: { data: {action: 'conditional-enabled#enable', 'conditional-enabled-target' => "checkInput"} } %>
+    </div>
   </div>
-</div>
-<div class="row mb-3">
-  <div class="col-md-4">
-    <%= @form.select :language_code, language_choices, label: "Language:" %>
+  <%= @form.text_field :transliteration_standard, label: "Transliteration standard:", class: 'mb-3', data: { 'conditional-enabled-target' => "conditionalInput" } %>
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <%= @form.select :language_code, language_choices, label: "Language:" %>
+    </div>
   </div>
 </div>
 <div class="row mb-3">
@@ -13,6 +16,8 @@
     <%= @form.select :script_code, script_choices, label: "Script:" %>
   </div>
 </div>
+<%= @form.text_field :value_at, label: "URL:", class: 'mb-3' %>
+<%= @form.text_field :display_label, label: "Display label:", class: 'mb-3' %>
 <%= @form.text_field :value, label: "Value:", class: 'mb-3' %>
 <div class="row">
   <h6>Structured titles:</h6>

@@ -6,6 +6,9 @@ class CreateTitles < ActiveRecord::Migration[7.0]
       t.string :type
       t.string :language_code
       t.string :script_code
+      t.string :transliteration_standard
+      t.string :display_label
+      t.string :value_at
       # Title has parallel titles
       t.belongs_to :title
     end
