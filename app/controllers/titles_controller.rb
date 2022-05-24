@@ -174,9 +174,16 @@ class TitlesController < ApplicationController
   def title_params
     params.require(:title).permit(:value,
                                   :type,
+                                  :language_code,
+                                  :script_code,
                                   :primary_status,
-                                  parallel_titles_attributes: [:value, :_destroy,
-                                                               { structured_values_attributes: %i[value type _destroy] }],
+                                  parallel_titles_attributes: [:value,
+                                                               :type,
+                                                               :language_code,
+                                                               :script_code,
+                                                               :_destroy,
+                                                               { structured_values_attributes: %i[value type
+                                                                                                  _destroy] }],
                                   structured_values_attributes: %i[value type _destroy])
   end
 end

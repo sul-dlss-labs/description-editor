@@ -185,6 +185,8 @@ GEM
     io-console (0.5.11)
     irb (1.4.1)
       reline (>= 0.3.0)
+    iso-15924 (0.1.4)
+    iso-639 (0.3.5)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -352,6 +354,8 @@ DEPENDENCIES
   debug
   dor-services-client (~> 12.0)
   importmap-rails
+  iso-15924
+  iso-639
   jbuilder
   pg (~> 1.1)
   puma (~> 5.0)

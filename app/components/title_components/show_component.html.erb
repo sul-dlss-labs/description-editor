@@ -27,12 +27,6 @@
             <% end %>
           </div>
         <% end %>
-        <% if title.type %>
-          <dl class="row mb-0">
-            <dt class="col-sm-2">Type</dt>
-            <dd class="col-sm-10"><%= title.type %></dd>
-          </dl>      
-        <% end %>
         <div class="hstack gap-2">
           <%= button_to "Edit", edit_description_title_path(@description_id, @index), method: :get, class: "btn btn-outline-primary btn-sm" %>
           <%= button_to "Delete", description_title_path(@description_id, @index), method: :delete, data: { 'turbo-frame' => "titleFrame" }, class: "btn btn-outline-primary btn-sm" %>

@@ -7,9 +7,5 @@ module TitleComponents
       @url = url
       @method = method
     end
-
-    def type_choices
-      CocinaDescriptionTypes.types_for('title')
-    end
   end
 end

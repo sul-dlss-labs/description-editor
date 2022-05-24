@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_20_124929) do
     t.string "value"
     t.boolean "primary_status"
     t.string "type"
+    t.string "language_code"
+    t.string "script_code"
     t.bigint "title_id"
     t.index ["title_id"], name: "index_titles_on_title_id"
   end

@@ -42,6 +42,8 @@ gem 'dor-services-client', '~> 12.0'
 gem 'bootstrap', '~> 5.1'
 gem 'bootstrap-icons-helper'
 gem 'config'
+gem 'iso-15924'
+gem 'iso-639'
 gem 'view_component'
 
 group :development, :test do

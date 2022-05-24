@@ -26,7 +26,13 @@ class Title < ApplicationRecord
       type: type.presence,
       structuredValue: structured_values.map(&:to_cocina_props),
       parallelValue: parallel_titles.map(&:to_cocina_props)
-    }.compact
+    }.tap do |props|
+      props[:valueLanguage] = { code: language_code, source: { code: 'iso639-2b' } } if language_code
+      if script_code
+        props[:valueLanguage] ||= {}
+        props[:valueLanguage][:valueScript] = { code: script_code, source: { code: 'iso15924' } }
+      end
+    end.compact
     Cocina::Models::Title.new(props).to_h
   end
 
@@ -45,7 +51,16 @@ class Title < ApplicationRecord
       parallel_titles: cocina_title.parallelValue.map do |cocina_parallel_value|
                          Title.from_cocina(cocina_parallel_value)
                        end
-    }
+    }.tap do |params|
+      if cocina_title.valueLanguage&.source&.code == 'iso639-2b'
+        params[:language_code] =
+          cocina_title.valueLanguage.code
+      end
+      if cocina_title.valueLanguage&.valueScript&.source&.code == 'iso15924'
+        params[:script_code] =
+          cocina_title.valueLanguage.valueScript.code
+      end
+    end
     new(params)
   end
 end
