@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Title < ApplicationRecord
+  # Since this has a "type" field:
+  self.inheritance_column = :_type_disabled
+
   has_many :structured_values, class_name: 'TitleStructuredValue'
   accepts_nested_attributes_for :structured_values, reject_if: :all_blank, allow_destroy: true
 
@@ -20,6 +23,7 @@ class Title < ApplicationRecord
     props = {
       value: value.presence,
       status: primary_status ? 'primary' : nil,
+      type: type.presence,
       structuredValue: structured_values.map(&:to_cocina_props),
       parallelValue: parallel_titles.map(&:to_cocina_props)
     }.compact
@@ -34,6 +38,7 @@ class Title < ApplicationRecord
     params = {
       value: cocina_title.value,
       primary_status: cocina_title.status == 'primary',
+      type: cocina_title.type,
       structured_values: cocina_title.structuredValue.map do |cocina_structured_value|
                            TitleStructuredValue.from_cocina(cocina_structured_value)
                          end,

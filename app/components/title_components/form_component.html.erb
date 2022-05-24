@@ -40,6 +40,11 @@
       <%= form.check_box :primary_status, label: "Primary" %>  
     </div>
   </div>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <%= form.select :type, type_choices, label: "Type:" %>
+    </div>
+  </div>
   <div class="hstack gap-2 mt-4">
     <%= form.submit "Save" %>
     <%= link_to "Cancel", @url, class: "btn btn-outline-primary btn-sm" %>
