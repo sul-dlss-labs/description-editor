@@ -1,6 +1,8 @@
 <h1>Editing <%= @druid %></h1>
-<div class="mt-2 mb-3">
+<p class="text-muted">This is a draft description. It will not be updated in SDR until you click Update description.</p>
+<div class="mt-2 mb-3 hstack gap-3">
   <%= button_to "Update description", description_path(params[:id]), method: :put, class: "btn btn-primary btn-lg" %>
+  <%= button_to "Edit another", '/', method: :get, class: 'btn btn-outline-primary btn-sm' %>
 </div>
 <div class="accordion" id="descriptionAccordion">
   <%= render(Accordion::ItemComponent.new(description_id: params[:id], description_field: :title, show: true)) %>

@@ -5,11 +5,21 @@ class HomeController < ApplicationController
   def index; end
 
   def load
-    # TODO: Normalize druid: prefix
-    description = Description.find_by(external_identifier: [params[:id]])
-    description ||= DorService.load(params[:id])
+    @description = Description.find_by(external_identifier: druid_param)
+    if @description
+      if params[:discard]
+        @description.destroy!
+      else
+        return render :confirm
+      end
+    end
+
+    @description = DorService.load(druid_param)
     # TODO: Handle exceptions
-    # TODO: Handle resume vs. reload
-    redirect_to description
+    redirect_to @description
+  end
+
+  def druid_param
+    params[:id].starts_with?('druid:') ? params[:id] : "druid:#{params[:id]}"
   end
 end

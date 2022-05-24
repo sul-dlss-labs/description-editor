@@ -1,11 +1,14 @@
 <h1 class="mb-5">Description Editor</h1>
-<%= form_with url: load_path, method: :post do |form| %>
-  <div class="row">
-    <div class="col-sm-6">
-      <%= form.text_field :id, class: 'form-control form-control-lg', placeholder: 'Enter a druid, e.g., druid:bb016xs8671' %>
+<turbo-frame id="loadFrame">
+  <%= form_with url: load_path, method: :post do |form| %>
+    <div class="row">
+      <div class="col-sm-6">
+        <%= form.text_field :id, class: 'form-control form-control-lg', placeholder: 'Enter a druid, e.g., druid:bb016xs8671', required: true %>
+      </div>
+      <div class="col-sm-1">
+        <%= form.submit "Edit", class: 'btn btn-primary btn-lg' %>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <%= form.submit "Edit", class: 'btn btn-primary btn-lg' %>
-    </div>
-  </div>
-<% end %>
+    <p class="text-muted mt-1">This will create a draft description that you can edit for updating in SDR.</p>
+  <% end %>
+</turbo-frame>

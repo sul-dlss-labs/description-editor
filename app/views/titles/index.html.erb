@@ -1,4 +1,9 @@
 <turbo-frame id="titleFrame">
+  <% if @warn_data_loss %>
+    <div class="alert alert-warning" role="alert">
+      Editing is not supported for all of the data in these titles. Updating the description may result in data loss.
+    </div>
+  <% end %>
   <turbo-frame id="titlesFrame">
     <%= render(TitleComponents::ShowComponent.with_collection(@title_models, description_id: params[:description_id])) %>
   </turbo-frame>

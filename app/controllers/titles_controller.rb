@@ -85,6 +85,11 @@ class TitlesController < ApplicationController
       Title.from_cocina_props(title_props)
     end
 
+    @warn_data_loss = @description.title.any? do |title_props|
+      title_model = Title.from_cocina_props(title_props)
+      Cocina::Models::Title.new(title_model.to_cocina_props) != Cocina::Models::Title.new(title_props)
+    end
+
     render :index
   end
 

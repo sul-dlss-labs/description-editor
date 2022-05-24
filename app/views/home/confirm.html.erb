@@ -1,0 +1,13 @@
+<turbo-frame id="loadFrame">
+  <p class="h2">A draft already exists for this description.</p>
+  <p>Draft was last edited <%= distance_of_time_in_words(@description.updated_at, Time.now) %> ago and created <%= distance_of_time_in_words(@description.created_at, Time.now)%> ago.</p>
+  <div class="hstack gap-2">
+    <%= button_to "Continue editing this draft", @description, method: :get, class: 'btn btn-primary btn-lg', data: { 'turbo-frame' => "_top"} %>
+    <%= form_with url: load_path, method: :post, data: { 'turbo-frame' => "_top"} do |form| %>
+      <%= form.hidden_field :id, value: @description.external_identifier %>
+      <%= form.hidden_field :discard, value: true %>
+      <%= form.submit "Discard and create a new draft", class: 'btn btn-primary btn-lg' %>
+    <% end %>
+    <%= button_to "Cancel", '/', method: :get, class: 'btn btn-primary btn-lg', data: { 'turbo-frame' => "_top"} %>
+  </div>
+</turbo-frame>
