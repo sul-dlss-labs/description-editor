@@ -46,7 +46,7 @@ class TitlesController < ApplicationController
     @title_model = Title.new(title_params)
 
     new_titles_props = @description.title.dup
-    new_title_props << @title_model.to_cocina_props
+    new_titles_props << @title_model.to_cocina_props
 
     return render :new, status: :unprocessable_entity unless valid?(new_titles_props)
 

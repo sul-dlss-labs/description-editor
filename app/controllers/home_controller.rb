@@ -10,7 +10,7 @@ class HomeController < ApplicationController
       if params[:discard]
         @description.destroy!
       else
-        return render :confirm
+        return render :confirm, status: :unprocessable_entity
       end
     end
 
